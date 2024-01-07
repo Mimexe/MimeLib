@@ -1,6 +1,6 @@
 name: MimeLib
 version: '${version}'
-main: fr.mime.mimelib.MimeLib
+main: fr.mime.mimelib.MimeLibPlugin
 api-version: '1.20'
 load: STARTUP
 authors: [Mime]
