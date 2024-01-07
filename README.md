@@ -1,26 +1,21 @@
-# MimeLib
-![MimeLib Logo](https://i.imgur.com/UyCB5tM.png)
+# MimeLib - Plugin Library for Mime's Plugins
+![Logo](https://i.imgur.com/UyCB5tM.png)
 
 ## Overview
-
-MimeLib is a library plugin for most of [Mime](https://github.com/Mimexe)'s plugins. This can be used for others plugin developers too.
+MimeLib is a versatile library plugin designed to enhance the functionality of various plugins developed by Mime. This library is not exclusive to Mime's plugins and can be utilized by other developers as well.
 
 ## Features
-
-- **Easy to use API:** _MimeLib has a easy to use API which can be improved at any time_
-- **User friendly docs:** _The [docs](https://docs.mimedev.fr/docs/category/mimelib) is easy to use and has all the information you need_
-- **Auto-download:** _You can automatically download a plugin from [Spigot](https://www.spigotmc.org) or populars/recommended plugins preconfigured_
+- Easy-to-Use API: MimeLib boasts an intuitive API that is continuously improving to meet your development needs.
+- User-Friendly Documentation: Explore the docs for comprehensive and easily understandable information.
+- Auto-Download Functionality: Simplify plugin management by automatically downloading plugins from Spigot or other preconfigured popular/recommended sources.
 
 ## Installation
-
-1. Download the latest release from the [releases page](https://github.com/Mimexe/MimeLib/releases).
-2. Place the `MimeLib.jar` file in the `plugins` folder of your Bukkit/Spigot server.
+1. Download the latest release from the releases page.
+2. Place the MimeLib.jar file into the plugins folder of your Bukkit/Spigot server.
 3. Restart your server.
 
 ## Contributing
-
-Contributions are welcome! If you have ideas for new features or improvements, feel free to open an issue or submit a pull request.
+We welcome contributions! If you have ideas for new features or improvements, please open an issue or submit a pull request.
 
 ## License
-
-This project is licensed under the [GPL-3.0 license](LICENSE).
+This project is licensed under the [GPL-3.0 license](LICENSE). Feel free to explore and contribute to the development of MimeLib.
