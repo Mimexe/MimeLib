@@ -54,3 +54,14 @@ processResources {
 shadowJar {
     archiveFileName = "MimeLib-${version}.jar"
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'fr.mime'
+            artifactId = 'MimeLib'
+
+            from components.java
+        }
+    }
+}
