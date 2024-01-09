@@ -1,0 +1,4 @@
+updatechecker:
+  enabled: true
+  auto-check: true
+  auto-download: false

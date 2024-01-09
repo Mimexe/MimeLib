@@ -6,3 +6,37 @@ load: STARTUP
 authors: [Mime]
 description: Library for Mime's plugins
 website: www.mimedev.fr
+commands:
+  mimelib:
+    description: MimeLib command
+    aliases: [ml]
+permissions:
+  mimelib.*:
+    description: Gives access to all MimeLib commands
+    default: op
+    children:
+      mimelib.reload: true
+      mimelib.update.*: true
+      mimelib.command: true
+  mimelib.update.*:
+    description: Gives access to all MimeLib update commands
+    default: op
+    children:
+      mimelib.update.check: true
+      mimelib.update.download: true
+      mimelib.update.notify: true
+  mimelib.command:
+    description: Allows to use MimeLib command
+    default: op
+  mimelib.reload:
+    description: Allows to reload MimeLib
+    default: op
+  mimelib.update.check:
+    description: Allows to check for updates
+    default: op
+  mimelib.update.download:
+    description: Allows to download updates
+    default: op
+  mimelib.update.notify:
+    description: Allows to be notified of updates
+    default: op

@@ -1,9 +1,10 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
 }
 
 group = 'fr.mime'
-version = '1.0'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -19,6 +20,9 @@ repositories {
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT"
+    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'com.zaxxer:HikariCP:5.1.0'
+    implementation 'org.jetbrains:annotations:24.0.1'
 }
 
 def targetJavaVersion = 17
@@ -44,4 +48,8 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+shadowJar {
+    archiveFileName = "MimeLib-${version}.jar"
 }

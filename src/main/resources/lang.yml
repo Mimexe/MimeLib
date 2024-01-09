@@ -1,0 +1,22 @@
+command:
+  version: "%prefix% %stringversion%"
+  reload: "%prefix% &aMimeLib reloaded"
+  update:
+    disabled: "%prefix% &cUpdate checker is disabled"
+    available: "%prefix% &aNew version available: &f%update_version%. Use &e/mimelib check download &ato update"
+    checking: "%prefix% &aChecking for updates..."
+    latest: "%prefix% &aYou are using the latest version"
+    error: "%prefix% &cAn error occurred while checking for updates"
+  download:
+    start: "%prefix% &aDownloading MimeLib %update_version%..."
+    success: "%prefix% &aMimeLib %update_version% downloaded successfully"
+    error: "%prefix% &cAn error occurred while downloading MimeLib %update_version%"
+  help:
+    header: "&6&m---------------------&r &6MimeLib &7%version% &6&m---------------------&r"
+    footer: "&6&m-----------------------------------------------------&r"
+    commands: |
+        &6/mimelib version &7- &fShows MimeLib version
+        &6/mimelib update check &7- &fChecks for updates
+        &6/mimelib update download &7- &fUpdates MimeLib
+        &6/mimelib reload &7- &fReloads MimeLib
+        &6/mimelib help &7- &fShows this help page
