@@ -1,7 +1,7 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id 'maven-publish'
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'fr.mime'
@@ -17,7 +17,6 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
-    maven { url "https://jitpack.io"  }
 }
 
 dependencies {
