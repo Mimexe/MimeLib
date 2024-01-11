@@ -7,14 +7,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class JoinListener implements Listener {
+public class PlayerListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if(MimeLibPlugin.getInstance().isUpdateAvailable()) {
             p.sendMessage(Lang.get("command.update.available"));
-        } else {
-            p.sendMessage(Lang.get("command.update.latest"));
         }
     }
 }

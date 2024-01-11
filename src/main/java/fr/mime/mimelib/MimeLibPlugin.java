@@ -1,6 +1,6 @@
 package fr.mime.mimelib;
 
-import fr.mime.mimelib.listeners.JoinListener;
+import fr.mime.mimelib.listeners.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -53,6 +53,10 @@ public final class MimeLibPlugin extends JavaPlugin {
         return false;
     }
 
+    private void checkPlugins() {
+        
+    }
+
     private void printText() {
         getLogger().info("        _              _  _  _    ");
         getLogger().info(" _ __  (_) _ __   ___ | |(_)| |__ ");
@@ -65,7 +69,7 @@ public final class MimeLibPlugin extends JavaPlugin {
     }
 
     private void registerListeners() {
-        MimeLib.getPM().registerEvents(new JoinListener(), this);
+        MimeLib.getPM().registerEvents(new PlayerListener(), this);
     }
 
     @Override

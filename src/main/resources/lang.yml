@@ -3,7 +3,7 @@ command:
   reload: "%prefix% &aMimeLib reloaded"
   update:
     disabled: "%prefix% &cUpdate checker is disabled"
-    available: "%prefix% &aNew version available: &f%update_version%. Use &e/mimelib check download &ato update"
+    available: "%prefix% &aNew version available: &f%update_version%&a. &aUse &e/mimelib update download &ato update"
     checking: "%prefix% &aChecking for updates..."
     latest: "%prefix% &aYou are using the latest version"
     error: "%prefix% &cAn error occurred while checking for updates"
