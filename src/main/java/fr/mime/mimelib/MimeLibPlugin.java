@@ -1,6 +1,8 @@
 package fr.mime.mimelib;
 
 import fr.mime.mimelib.listeners.PlayerListener;
+import fr.mime.mimelib.menu.MenuListener;
+import fr.mime.mimelib.utils.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -25,6 +27,9 @@ public final class MimeLibPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+        if(MimeLib.isBukkit()) {
+            getLogger().warning("MimeLib is not compatible with Bukkit, please use Spigot or Paper");
+        }
         File pluginsUpdatesDir = new File("." + File.separator + "plugins"+File.separator+"_updates_");
         if(pluginsUpdatesDir.exists()) {
             if(pluginsUpdatesDir.delete()) {
@@ -70,6 +75,7 @@ public final class MimeLibPlugin extends JavaPlugin {
 
     private void registerListeners() {
         MimeLib.getPM().registerEvents(new PlayerListener(), this);
+        MimeLib.getPM().registerEvents(new MenuListener(), this);
     }
 
     @Override
@@ -79,6 +85,8 @@ public final class MimeLibPlugin extends JavaPlugin {
         printText();
         saveDefaultConfig();
         createLangConfig();
+        getLogger().info("Checking for missing keys in lang.yml...");
+        Lang.checkDefaults();
         if(getConfig().getBoolean("updatechecker.enabled") && getConfig().getBoolean("updatechecker.auto-check")) checkUpdates();
         registerCommands();
         registerListeners();
@@ -102,7 +110,9 @@ public final class MimeLibPlugin extends JavaPlugin {
                 }
             }, 60L);
         }
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6MimeLib &7- &eMimeLib v"+MimeLib.getMimeLibVersion()+" is now enabled"));
+        if(MimeLib.isBukkit()) {
+            getLogger().warning("MimeLib is not compatible with Bukkit, please use Spigot or Paper");
+        }
         getLogger().info("--------MIMELIB--------");
     }
 
@@ -145,7 +155,6 @@ public final class MimeLibPlugin extends JavaPlugin {
             getLogger().info("Successfully updated MimeLib!");
         }
         getLogger().info("MimeLib is now disabled");
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6MimeLib &7- &eMimeLib v"+MimeLib.getMimeLibVersion()+" is now disabled"));
         getLogger().info("--------MIMELIB--------");
     }
 
@@ -194,6 +203,10 @@ public final class MimeLibPlugin extends JavaPlugin {
 
     public FileConfiguration getLangConfig() {
         return langConfig;
+    }
+
+    public File getLangConfigFile() {
+        return langConfigFile;
     }
 
     public String getUpdateVersion() {

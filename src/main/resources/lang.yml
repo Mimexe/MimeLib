@@ -9,8 +9,9 @@ command:
     error: "%prefix% &cAn error occurred while checking for updates"
   download:
     start: "%prefix% &aDownloading MimeLib %update_version%..."
-    success: "%prefix% &aMimeLib %update_version% downloaded successfully"
+    success: "%prefix% &aMimeLib %update_version% downloaded successfully. Restart your server to apply changes."
     error: "%prefix% &cAn error occurred while downloading MimeLib %update_version%"
+    restart: "%prefix% &cRestarting server in 5 seconds..."
   help:
     header: "&6&m---------------------&r &6MimeLib &7%version% &6&m---------------------&r"
     footer: "&6&m-----------------------------------------------------&r"
