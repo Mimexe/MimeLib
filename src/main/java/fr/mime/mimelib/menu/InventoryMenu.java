@@ -8,20 +8,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.function.Function;
 
 public abstract class InventoryMenu implements InventoryHolder {
     protected Inventory inventory;
     protected Player player;
     protected boolean dontCancel = false;
-    protected ArrayList<Integer> freeSlots = new ArrayList<>();
 
     public InventoryMenu(Player p) {
         this.player = p;
@@ -46,12 +42,6 @@ public abstract class InventoryMenu implements InventoryHolder {
         this.player.openInventory(this.inventory);
     }
 
-    public void freeSlot(int slot) {
-        this.freeSlots.add(slot);
-    }
-    public void blockSlot(int slot) {
-        this.freeSlots.remove(slot);
-    }
 
     @Override
     public @NotNull Inventory getInventory() {
@@ -137,10 +127,6 @@ public abstract class InventoryMenu implements InventoryHolder {
 
     public boolean isDontCancel() {
         return dontCancel;
-    }
-
-    public ArrayList<Integer> getFreeSlots() {
-        return freeSlots;
     }
 
     public static class Slots {

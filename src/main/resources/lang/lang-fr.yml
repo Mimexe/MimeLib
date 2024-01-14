@@ -1,0 +1,26 @@
+command:
+  version: "%prefix% %stringversion%"
+  reload: "%prefix% &aMimeLib rechargé"
+  update:
+    disabled: "%prefix% &cLe vérificateur de mise à jour est désactivé"
+    available: "%prefix% &aNouvelle version disponible: &f%update_version%&a. &aUtiliser &e/mimelib update download &apour mettre à jour"
+    checking: "%prefix% &aVérification des mises à jours..."
+    latest: "%prefix% &aVous utilisez la dernière version."
+    error: "%prefix% &cUne erreur est survenue lors de la vérification des mises à jours."
+  download:
+    start: "%prefix% &aTéléchargement de MimeLib %update_version%..."
+    success: "%prefix% &aMimeLib %update_version% a été téléchargé avec succès. Redémarrer votre serveur pour appliquer les changements."
+    error: "%prefix% &cUne erreur est survenue lors du téléchargement de MimeLib %update_version%"
+    restart: "%prefix% &cRedémarrage du serveur dans 5 secondes..."
+  help:
+    header: "&6&m---------------------&r &6MimeLib &7%version% &6&m---------------------&r"
+    footer: "&6&m-----------------------------------------------------&r"
+    commands: |-
+      &6/mimelib version &7- &fAffiche la version de MimeLib
+      &6/mimelib update check &7- &fVérifie les mises à jours
+      &6/mimelib update download &7- &fMet à jour MimeLib
+      &6/mimelib reload &7- &fRecharge MimeLib
+      &6/mimelib help &7- &fAffiche cette page d'aide
+    commands_devmode: |-
+      &c&lDEVMODE > &6/mimelib forceupdate &7- &fMet à jour MimeLib sans aucune vérification
+      &c&lDEVMODE > &6/mimelib testmenu &7- &fOuvre le menu de test

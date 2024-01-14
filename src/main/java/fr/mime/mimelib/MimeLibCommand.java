@@ -24,22 +24,26 @@ public class MimeLibCommand implements CommandExecutor {
             help(sender);
             return true;
         }
+        if(MimeLibPlugin.getInstance().devmode(sender)) {
+            if (args[0].equalsIgnoreCase("forceupdate")) {
+                sender.sendMessage("§c§lWARNING: §4Forcing update...");
+                return runUpdate(sender, true);
+            }
+            if(args[0].equalsIgnoreCase("testmenu")) {
+                if(!(sender instanceof Player p)) {
+                    sender.sendMessage("§cYou must be a player to use this command");
+                    return false;
+                }
+                new TestMenu(p).open();
+                return true;
+            }
+        } else {
+            help(sender);
+        }
         if (args[0].equalsIgnoreCase("version")) {
             sender.sendMessage(Lang.get("command.version"));
             return true;
         }
-        if(args[0].equalsIgnoreCase("test")) {
-            if(!(sender instanceof Player p)) {
-                sender.sendMessage("§cYou must be a player to use this command");
-                return false;
-            }
-            new TestMenu(p).open();
-            return true;
-        }
-//        if(args[0].equalsIgnoreCase("forceupdate")) {
-//            sender.sendMessage("§c§lWARNING: §4Forcing update...");
-//            return runUpdate(sender);
-//        }
         if (args[0].equalsIgnoreCase("reload")) {
             MimeLibPlugin.getInstance().reloadConfig();
             MimeLibPlugin.getInstance().reloadLangConfig();
@@ -76,7 +80,7 @@ public class MimeLibCommand implements CommandExecutor {
                 return true;
             }
             if (args[1].equalsIgnoreCase("download")) {
-                return runUpdate(sender);
+                return runUpdate(sender, false);
             }
             help(sender);
             return false;
@@ -84,19 +88,24 @@ public class MimeLibCommand implements CommandExecutor {
         return true;
     }
 
-    private boolean runUpdate(@Nonnull CommandSender sender) {
+    private boolean runUpdate(@Nonnull CommandSender sender, boolean force) {
         sender.sendMessage(Lang.get("command.download.start"));
+
         try {
-            MimeLibPlugin.getInstance().downloadUpdates();
-            sender.sendMessage(Lang.get("command.download.success"));
-            if(MimeLibPlugin.getInstance().getConfig().getBoolean("updatechecker.auto-restart")) {
-                Bukkit.broadcastMessage(Lang.get("command.download.restart"));
-                Bukkit.getScheduler().runTaskLater(MimeLibPlugin.getInstance(), () -> {
-                    Bukkit.broadcastMessage("§c§lRestarting!!!");
-                    Bukkit.getScheduler().runTaskLater(MimeLibPlugin.getInstance(), () -> {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
-                    }, 20L);
-                }, 20L * 5);
+            if(force) {
+                MimeLibPlugin.getInstance().downloadUpdates();
+                updateSuccess(sender);
+                return true;
+            }
+
+            String returnCode = MimeLibPlugin.getInstance().downloadUpdates();
+            if(returnCode.equalsIgnoreCase("SUCCESS")) {
+                updateSuccess(sender);
+            } else if (returnCode.equalsIgnoreCase("NO_UPDATES")) {
+                sender.sendMessage(Lang.get("command.update.latest"));
+            } else {
+                sender.sendMessage(Lang.get("command.download.error"));
+                return false;
             }
         } catch (IOException e) {
             MimeLibPlugin.getInstance().getLogger().warning("Unable to download updates: "+e.getMessage());
@@ -106,9 +115,23 @@ public class MimeLibCommand implements CommandExecutor {
         return true;
     }
 
+    private void updateSuccess(@Nonnull CommandSender sender) {
+        sender.sendMessage(Lang.get("command.download.success"));
+        if(MimeLibPlugin.getInstance().getConfig().getBoolean("updatechecker.auto-restart")) {
+            Bukkit.broadcastMessage(Lang.get("command.download.restart"));
+            Bukkit.getScheduler().runTaskLater(MimeLibPlugin.getInstance(), () -> {
+                Bukkit.broadcastMessage("§c§lRestarting!!!");
+                Bukkit.getScheduler().runTaskLater(MimeLibPlugin.getInstance(), () -> {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
+                }, 20L);
+            }, 20L * 5);
+        }
+    }
+
     private void help(@NotNull CommandSender sender) {
         sender.sendMessage(Lang.get("command.help.header"));
         sender.sendMessage(Lang.get("command.help.commands"));
+        if(MimeLibPlugin.getInstance().devmode(sender)) sender.sendMessage(Lang.get("command.help.commands_devmode"));
         sender.sendMessage(Lang.get("command.help.footer"));
     }
 }

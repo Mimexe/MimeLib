@@ -8,3 +8,10 @@ updatechecker:
   # restart the server automatically after downloading an update (only works if the command is executed by the console, auto-download will not restart the server)
   auto-restart: false
 
+# for english, use "en"
+# for French, use "fr"
+locale: "en"
+
+# activate the dev mode
+# can be used for testing language file
+devmode: false

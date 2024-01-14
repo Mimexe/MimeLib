@@ -36,7 +36,6 @@ public class TestMenu extends InventoryMenu {
         setItem(3, makeItem(Material.DIAMOND, "§cTest Item", "§7This is a test item"));
         setItem(4, makeItem(Material.DIAMOND_BLOCK, "§9Take this", "§7You can take this item"));
         setItem(5, makeItem(Material.EMERALD, "§aOther test item", "§7This is another test item"));
-        freeSlot(4);
         this.fillRemaining(Material.RED_STAINED_GLASS_PANE);
     }
 }

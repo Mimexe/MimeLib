@@ -6,6 +6,7 @@ load: STARTUP
 authors: [Mime]
 description: Library for Mime's plugins
 website: www.mimedev.fr
+softdepend: [PlaceholderAPI]
 commands:
   mimelib:
     description: MimeLib command
@@ -18,6 +19,7 @@ permissions:
       mimelib.reload: true
       mimelib.update.*: true
       mimelib.command: true
+      mimelib.devmode: true
   mimelib.update.*:
     description: Gives access to all MimeLib update commands
     default: op
@@ -30,6 +32,9 @@ permissions:
     default: op
   mimelib.reload:
     description: Allows to reload MimeLib
+    default: op
+  mimelib.devmode:
+    description: Allows to use MimeLib devmode
     default: op
   mimelib.update.check:
     description: Allows to check for updates

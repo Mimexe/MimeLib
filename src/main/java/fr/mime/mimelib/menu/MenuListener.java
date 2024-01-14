@@ -17,9 +17,6 @@ public class MenuListener implements Listener {
             if (e.getCurrentItem() == null) {
                 return;
             }
-            if(menu.getFreeSlots().contains(e.getSlot())) {
-                e.setCancelled(false);
-            }
             menu.handleMenu(e);
         }
     }
