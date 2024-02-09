@@ -1,19 +1,31 @@
 package fr.mime.mimelib;
 
-import fr.mime.mimelib.test.TestMenu;
+import fr.mime.mimelib.hooks.PlugManXHook;
 import fr.mime.mimelib.utils.Lang;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MimeLibCommand implements CommandExecutor {
+/**
+ * The command for the plugin
+ */
+public class MimeLibCommand implements CommandExecutor, TabCompleter {
 
+    /**
+     * The command for the plugin
+     * @param sender the sender of the command
+     * @param command the command
+     * @param s the label of the command
+     * @param args the arguments of the command
+     * @return if the command is successfully executed
+     */
     @Override
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] args) {
         if (args.length == 0) {
@@ -29,12 +41,27 @@ public class MimeLibCommand implements CommandExecutor {
                 sender.sendMessage("§c§lWARNING: §4Forcing update...");
                 return runUpdate(sender, true);
             }
-            if(args[0].equalsIgnoreCase("testmenu")) {
+            if(args[0].equalsIgnoreCase("testlang")) {
+                if(args.length == 2 && args[1].equalsIgnoreCase("simulate_update")) {
+                    sender.sendMessage("§cSimulating update...");
+                    MimeLibPlugin.getInstance().simulateUpdate();
+                }
                 if(!(sender instanceof Player p)) {
-                    sender.sendMessage("§cYou must be a player to use this command");
+                    sender.sendMessage("§cNot a player, placeholderapi for player will not work");
+                    sender.sendMessage(Lang.get("test"));
+                    return true;
+                }
+                sender.sendMessage(Lang.get("test", p));
+                return true;
+            }
+            if(args[0].equalsIgnoreCase("fullReload")) {
+                sender.sendMessage("§c§lWARNING: §4Full reload...");
+                PlugManXHook hook = MimeLibPlugin.getInstance().getHooks().getPlugmanHook();
+                if(!hook.isEnabled()) {
+                    sender.sendMessage("§c§lCannot full reload, PlugManX is required.");
                     return false;
                 }
-                new TestMenu(p).open();
+                hook.get().reload(MimeLibPlugin.getInstance());
                 return true;
             }
         } else {
@@ -46,7 +73,7 @@ public class MimeLibCommand implements CommandExecutor {
         }
         if (args[0].equalsIgnoreCase("reload")) {
             MimeLibPlugin.getInstance().reloadConfig();
-            MimeLibPlugin.getInstance().reloadLangConfig();
+            MimeLibPlugin.getInstance().checkConfigDefaults();
             sender.sendMessage(Lang.get("command.reload"));
             return true;
         }
@@ -65,7 +92,7 @@ public class MimeLibCommand implements CommandExecutor {
                     MimeLibPlugin.getInstance().checkUpdates();
                     while (MimeLibPlugin.getInstance().isCheckingUpdate()) {
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -88,6 +115,12 @@ public class MimeLibCommand implements CommandExecutor {
         return true;
     }
 
+    /**
+     * Run the update
+     * @param sender the sender of the command
+     * @param force if the update should be forced
+     * @return if the update is successful
+     */
     private boolean runUpdate(@Nonnull CommandSender sender, boolean force) {
         sender.sendMessage(Lang.get("command.download.start"));
 
@@ -115,23 +148,69 @@ public class MimeLibCommand implements CommandExecutor {
         return true;
     }
 
+    /**
+     * The update is successful
+     * @param sender the sender of the command
+     */
     private void updateSuccess(@Nonnull CommandSender sender) {
         sender.sendMessage(Lang.get("command.download.success"));
-        if(MimeLibPlugin.getInstance().getConfig().getBoolean("updatechecker.auto-restart")) {
+        if(MimeLibPlugin.getInstance().getConfig().getBoolean("updatechecker.auto-restart") && sender instanceof ConsoleCommandSender) {
             Bukkit.broadcastMessage(Lang.get("command.download.restart"));
             Bukkit.getScheduler().runTaskLater(MimeLibPlugin.getInstance(), () -> {
                 Bukkit.broadcastMessage("§c§lRestarting!!!");
                 Bukkit.getScheduler().runTaskLater(MimeLibPlugin.getInstance(), () -> {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "restart");
+                    String cmd = MimeLibPlugin.getInstance().getConfig().getString("updatechecker.restart-command");
+                    if(cmd == null) {
+                        cmd = "restart";
+                    }
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
                 }, 20L);
             }, 20L * 5);
         }
     }
 
+    /**
+     * Show the help
+     * @param sender the sender of the command
+     */
     private void help(@NotNull CommandSender sender) {
         sender.sendMessage(Lang.get("command.help.header"));
         sender.sendMessage(Lang.get("command.help.commands"));
         if(MimeLibPlugin.getInstance().devmode(sender)) sender.sendMessage(Lang.get("command.help.commands_devmode"));
         sender.sendMessage(Lang.get("command.help.footer"));
+    }
+
+    /**
+     * The tab completer for the command
+     * @param sender the sender of the command
+     * @param command the command
+     * @param label the label of the command
+     * @param args the arguments of the command
+     * @return the list of tab completions
+     */
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+        List<String> tab = new ArrayList<>();
+        if(args.length == 1) {
+            tab.add("help");
+            tab.add("version");
+            if(sender.hasPermission("mimelib.reload")) tab.add("reload");
+            if(sender.hasPermission("mimelib.update.check") || sender.hasPermission("mimelib.update.download") || sender.hasPermission("mimelib.update.notify")) tab.add("update");
+            if(MimeLibPlugin.getInstance().devmode(sender)) {
+                tab.add("forceupdate");
+                tab.add("testlang");
+                tab.add("fullReload");
+            }
+        } else if(args.length == 2) {
+            if(args[0].equalsIgnoreCase("update")) {
+                if(sender.hasPermission("mimelib.update.check")) tab.add("check");
+                if(sender.hasPermission("mimelib.update.download")) tab.add("download");
+            }
+            if (args[0].equalsIgnoreCase("testlang")) {
+                tab.add("simulate_update");
+            }
+        }
+        return tab;
     }
 }

@@ -2,11 +2,10 @@ name: MimeLib
 version: '${version}'
 main: fr.mime.mimelib.MimeLibPlugin
 api-version: '1.20'
-load: STARTUP
 authors: [Mime]
 description: Library for Mime's plugins
-website: www.mimedev.fr
-softdepend: [PlaceholderAPI]
+website: docs.mimedev.fr
+softdepend: [PlaceholderAPI, PlugManX]
 commands:
   mimelib:
     description: MimeLib command

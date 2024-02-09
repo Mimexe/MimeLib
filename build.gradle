@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'fr.mime'
-version = '1.0.1'
+version = '1.1.1'
 
 repositories {
     mavenCentral()
@@ -20,14 +20,20 @@ repositories {
     maven {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
+    maven {
+        name = 'PlugMan'
+        url = 'https://raw.githubusercontent.com/TheBlackEntity/PlugMan/repository/'
+    }
 }
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT"
     compileOnly 'me.clip:placeholderapi:2.11.5'
+    compileOnly 'com.rylinaux:PlugMan:2.3.3'
     implementation 'commons-io:commons-io:2.15.1'
-    implementation 'com.zaxxer:HikariCP:5.1.0'
     implementation 'org.jetbrains:annotations:24.1.0'
+    implementation 'org.bstats:bstats-bukkit:3.0.2'
+    implementation 'com.github.zafarkhaja:java-semver:0.10.2'
 }
 
 def targetJavaVersion = 17
@@ -57,6 +63,7 @@ processResources {
 
 shadowJar {
     archiveFileName = "MimeLib-${version}.jar"
+    relocate 'org.bstats', 'fr.mime.bstats'
 }
 
 publishing {
@@ -75,3 +82,4 @@ compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
