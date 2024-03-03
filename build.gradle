@@ -68,11 +68,18 @@ shadowJar {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        maven(MavenPublication) {
             groupId = 'fr.mime'
             artifactId = 'MimeLib'
+            version = '1.1.1'
 
             from components.java
+        }
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'MimeLib'
+                url = 'https://discord.mimedev.fr'
+            }
         }
     }
 }
