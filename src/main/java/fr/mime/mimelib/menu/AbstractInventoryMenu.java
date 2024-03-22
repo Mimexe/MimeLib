@@ -13,131 +13,75 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
- * Class for creating an inventory menu
- * @see AbstractInventoryMenu
- * @see MimeLib#createHeadMenu(Player, java.util.Collection, String, int, String)
+ * Abstract class for creating an inventory menu
+ * @see InventoryMenu
+ * @see MimeLib#createHeadMenu(Player, Collection, String, int, String)
  */
-public class InventoryMenu implements InventoryHolder {
+public abstract class AbstractInventoryMenu implements InventoryHolder {
     /**
      * The inventory of the menu
      */
     protected Inventory inventory;
     /**
-     * The player who opens the menu
+     * The player who opened the menu
      */
     protected Player player;
     /**
      * If the menu should cancel the click event
      */
     protected boolean dontCancel = false;
-    /**
-     * The name of the menu
-     */
-    protected String menuName = null;
-    /**
-     * The slots of the menu
-     */
-    protected int slots = 0;
-    /**
-     * The consumer of the menu
-     */
-    protected Consumer<InventoryClickEvent> consumer = null;
-    /**
-     * The items of the menu
-     */
-    protected HashMap<Integer, ItemStack> items = new HashMap<>();
 
     /**
      * Constructor for the menu
-     * @param p the player who opens the menu
+     * @param p the player who opened the menu
      */
-    public InventoryMenu(Player p) {
-        new InventoryMenu(p, false);
+    public AbstractInventoryMenu(Player p) {
+        this.player = p;
     }
 
     /**
      * Constructor for the menu
-     * @param p the player who opens the menu
+     * @param p the player who opened the menu
      * @param dontCancel if the menu should cancel the click event
      */
-    public InventoryMenu(Player p, boolean dontCancel) {
+    public AbstractInventoryMenu(Player p, boolean dontCancel) {
         this.player = p;
         this.dontCancel = dontCancel;
     }
 
     /**
-     * Constructor for the menu
-     * @param p the player who opens the menu
-     * @param dontCancel if the menu should cancel the click event
-     * @param menuName the name of the menu
+     * Get the name of the menu
+     * @return the name of the menu
      */
-    public InventoryMenu(Player p, boolean dontCancel, String menuName) {
-        this.player = p;
-        this.dontCancel = dontCancel;
-        this.menuName = menuName;
-    }
+    public abstract String getMenuName();
 
     /**
-     * Constructor for the menu
-     * @param p the player who opens the menu
-     * @param dontCancel if the menu should cancel the click event
-     * @param menuName the name of the menu
-     * @param slots the slots of the menu
+     * Get the number of slots of the menu
+     * @return the number of slots of the menu
      */
-    public InventoryMenu(Player p, boolean dontCancel, String menuName, int slots) {
-        this.player = p;
-        this.dontCancel = dontCancel;
-        this.menuName = menuName;
-        this.slots = slots;
-    }
+    public abstract int getSlots();
 
     /**
-     * Set the name of the menu
-     * @param menuName the name of the menu
+     * Handle the click event of the menu
+     * @param e the click event
      */
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
+    public abstract void handleMenu(InventoryClickEvent e);
 
     /**
-     * Set the slots of the menu
-     * @param slots the slots of the menu
+     * Set the items of the menu
      */
-    public void setSlots(int slots) {
-        this.slots = slots;
-    }
-
-    /**
-     * Set the consumer of the menu
-     * @param consumer the consumer of the menu
-     */
-    public void setMenuHandler(Consumer<InventoryClickEvent> consumer) {
-        this.consumer = consumer;
-    }
+    public abstract void setMenuItems();
 
     /**
      * Open the menu
      */
     public void open() {
-        if(this.menuName == null) {
-            throw new NullPointerException("Menu name is null");
-        }
-        if(this.slots == 0) {
-            throw new NullPointerException("Slots is 0");
-        }
-        this.inventory = Bukkit.createInventory(this, this.slots, this.menuName);
-        if(!this.items.isEmpty()) {
-            for(Integer slot : this.items.keySet()) {
-                ItemStack item = this.items.get(slot);
-                if(item == null) continue;
-                this.inventory.setItem(slot, item);
-            }
-        }
+        this.inventory = Bukkit.createInventory(this, this.getSlots(), this.getMenuName());
+        this.setMenuItems();
         this.player.openInventory(this.inventory);
     }
 
@@ -154,19 +98,14 @@ public class InventoryMenu implements InventoryHolder {
     /**
      * Set an item in the inventory
      * @param slot the slot of the item
-     * @param item the item
+     * @param item the item to set
      */
     public void setItem(int slot, ItemStack item) {
-        if(this.inventory == null) {
-            this.items.remove(slot);
-            this.items.put(slot, item);
-            return;
-        }
         this.inventory.setItem(slot, item);
     }
 
     /**
-     * Set the items of the menu
+     * Create an item with this utility method
      * @param material the material of the item
      * @param displayName the name of the item
      * @param lore the lore of the item
@@ -190,7 +129,7 @@ public class InventoryMenu implements InventoryHolder {
      * @param material the material of the item
      */
     public void fillRemaining(Material material) {
-        for (int i = 0; i < this.slots; i++) {
+        for (int i = 0; i < this.getSlots(); i++) {
             if (this.inventory.getItem(i) == null || Objects.requireNonNull(this.inventory.getItem(i)).getType().equals(Material.AIR)) {
                 this.inventory.setItem(i, new ItemStack(material));
             }
@@ -301,15 +240,17 @@ public class InventoryMenu implements InventoryHolder {
     }
 
     /**
-     * Is the menu canceling the click event?
-     * @return if the menu is canceling the click event
+     * Check if this menu should cancel the click event
+     * @return if this menu should cancel the click event
      */
     public boolean isDontCancel() {
         return dontCancel;
     }
 
     /**
-     * Predefined slots for inventories
+     * Predefined slots for inventory sizes
+     * @see AbstractInventoryMenu#getSlots()
+     * @see InventoryMenu
      */
     public static class Slots {
         /**

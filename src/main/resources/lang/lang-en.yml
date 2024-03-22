@@ -1,0 +1,36 @@
+test: |-
+  {prefix} &aThis is a test of the language file. If you see this message correctly, then the language file is working correctly.
+  {prefix} Prefix: &f{prefix}
+  {prefix} Version: &f{version}
+  {prefix} StringVersion: &f{stringversion}
+  {prefix} UpdateVersion: &f{update_version} &7<--- If none, then the update checker did not find any updates or is disabled
+  {prefix} PlaceholderAPI player_name: &f%player_name% &7<--- If none, then PlaceholderAPI is not installed or Player expansion is not installed
+  {prefix} PlaceholderAPI server_name: &f%server_name% &7<--- If none, then PlaceholderAPI is not installed or Server expansion is not installed
+command:
+  version: "{prefix} {stringversion}"
+  reload: "{prefix} &aMimeLib reloaded"
+  update:
+    disabled: "{prefix} &cUpdate checker is disabled"
+    available: "{prefix} &aNew version available: &f{update_version}&a. &aUse &e/mimelib update download &ato update"
+    checking: "{prefix} &aChecking for updates..."
+    latest: "{prefix} &aYou are using the latest version"
+    error: "{prefix} &cAn error occurred while checking for updates"
+  download:
+    start: "{prefix} &aDownloading MimeLib {update_version}..."
+    success: "{prefix} &aMimeLib {update_version} downloaded successfully. Restart your server to apply changes."
+    error: "{prefix} &cAn error occurred while downloading MimeLib {update_version}"
+    restart: "{prefix} &cRestarting server in 5 seconds..."
+  help:
+    header: "&6&m---------------------&r &6MimeLib &7{version} &6&m---------------------&r"
+    devmode: "&6&m---------------------&r &c&lDEVMODE&r &6&m---------------------&r"
+    footer: "&6&m-----------------------------------------------------&r"
+    commands: |-
+      &6/mimelib version &7- &fShows MimeLib version
+      &6/mimelib update check &7- &fChecks for updates
+      &6/mimelib update download &7- &fUpdates MimeLib
+      &6/mimelib reload &7- &fReloads MimeLib
+      &6/mimelib help &7- &fShows this help page
+    commands_devmode: |-
+      &c&lDEVMODE > &6/mimelib forceupdate &7- &fForces MimeLib update without any checks
+      &c&lDEVMODE > &6/mimelib testlang &7- &fTests the language file
+      &c&lDEVMODE > &6/mimelib fullReload &7- &fPerforms a full reload on MimeLib

@@ -1,4 +1,19 @@
 updatechecker:
+  # enable or disable the update checker
   enabled: true
+  # check for updates automatically
   auto-check: true
+  # download updates automatically
   auto-download: false
+  # restart the server automatically after downloading an update (only works if the command is executed by the console, auto-download will not restart the server)
+  auto-restart: false
+  # set a custom command for restarting the server
+  restart-command: "restart"
+
+# for english, use "en"
+# for French, use "fr"
+locale: "en"
+
+# activate the dev mode
+# can be used for testing language file
+devmode: false
