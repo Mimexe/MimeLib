@@ -1,4 +1,4 @@
-package fr.mime.mimelib;
+package fr.mime.mimelib.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,16 +9,28 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
+/**
+ * Class for checking the updates
+ */
 public class UpdateChecker {
 
     private final JavaPlugin plugin;
     private final int resourceId;
 
+    /**
+     * Constructor for the update checker
+     * @param plugin the plugin
+     * @param resourceId the resource id
+     */
     public UpdateChecker(JavaPlugin plugin, int resourceId) {
         this.plugin = plugin;
         this.resourceId = resourceId;
     }
 
+    /**
+     * Check for updates and get the latest version
+     * @param consumer the consumer
+     */
     public void getVersion(final Consumer<String> consumer) {
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
             try (InputStream is = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId + "/~").openStream(); Scanner scann = new Scanner(is)) {
