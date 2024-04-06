@@ -30,7 +30,7 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT"
     compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'com.rylinaux:PlugMan:2.3.3'
-    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'commons-io:commons-io:2.16.0'
     implementation 'org.jetbrains:annotations:24.1.0'
     implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'com.github.zafarkhaja:java-semver:0.10.2'
