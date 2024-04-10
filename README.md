@@ -6,8 +6,6 @@ MimeLib is a versatile library plugin designed to enhance the functionality of v
 
 ## Features
 - Easy-to-Use API: MimeLib boasts an intuitive API that is continuously improving to meet your development needs.
-- User-Friendly Documentation: Explore the docs for comprehensive and easily understandable information.
-- Auto-Download Functionality: Simplify plugin management by automatically downloading plugins from Spigot or other preconfigured popular/recommended sources.
 
 ## Installation
 1. Download the latest release from the releases page.
